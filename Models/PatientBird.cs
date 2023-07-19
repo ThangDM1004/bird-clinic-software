@@ -19,11 +19,11 @@ namespace Models
         public int? Age { get; set; }
         public double? Weight { get; set; }
         public double? Height { get; set; }
-        public bool? Gender { get; set; }
+        public int? Gender { get; set; }
         public string BirdName { get; set; }
 
+        public virtual Gender GenderNavigation { get; set; }
         public virtual Species Species { get; set; }
-        public virtual Account UsernameNavigation { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

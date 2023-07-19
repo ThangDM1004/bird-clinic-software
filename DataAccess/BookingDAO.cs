@@ -28,6 +28,25 @@ namespace DataAccess
 			}
 			return bookingList;
 		}
+		public static List<Booking> getBookingUser(string username)
+		{
+			var bookingList = new List<Booking>();
+			try
+			{
+				using (var context = new BirdClinicContext())
+				{
+					bookingList = context.Bookings.Include(s => s.Status)
+												  .Include(v => v.Service)
+												  .Include(p => p.Patiend)
+												  .Where(u => u.UsernameCustomer == username).ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+
+			}
+			return bookingList;
+		}
 		public static void UpdateBooking(Booking booking)
 		{
 			try
@@ -79,7 +98,7 @@ namespace DataAccess
 			{
 				using (var context = new BirdClinicContext())
 				{
-					status = context.Bookings.SingleOrDefault(f => f.StatusId == id).StatusId;
+					status = context.Bookings.SingleOrDefault(f => f.BookingId == id).StatusId;
 				}
 			}
 			catch (Exception e)
@@ -104,5 +123,35 @@ namespace DataAccess
 			}
 			return booking;
 		}
+        public static List<Booking> getBookingByDoctor(string doctor)
+        {
+            var bookingList = new List<Booking>();
+            try
+            {
+                using (var context = new BirdClinicContext())
+                {
+                    bookingList = context.Bookings.Where(b => b.UsernameDoctor == doctor).ToList();
+                    return bookingList;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return bookingList;
+        }
+        public static void CreateBooking(Booking booking)
+        {
+            try
+            {
+                using (var context = new BirdClinicContext())
+                {
+                    context.Bookings.Add(booking);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e) { }
+        }
+    }
+		
 	}
-}

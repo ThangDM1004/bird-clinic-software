@@ -57,6 +57,10 @@
 			pictureBox1 = new System.Windows.Forms.PictureBox();
 			txtStatus = new System.Windows.Forms.TextBox();
 			dtpBirth = new System.Windows.Forms.DateTimePicker();
+			cbGender = new System.Windows.Forms.ComboBox();
+			label10 = new System.Windows.Forms.Label();
+			txtPhone = new System.Windows.Forms.TextBox();
+			label6 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)dgvCustomer).BeginInit();
 			panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -152,16 +156,16 @@
 			// dgvCustomer
 			// 
 			dgvCustomer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dgvCustomer.Location = new System.Drawing.Point(291, 364);
+			dgvCustomer.Location = new System.Drawing.Point(291, 468);
 			dgvCustomer.Name = "dgvCustomer";
 			dgvCustomer.RowHeadersWidth = 51;
 			dgvCustomer.RowTemplate.Height = 29;
-			dgvCustomer.Size = new System.Drawing.Size(887, 244);
+			dgvCustomer.Size = new System.Drawing.Size(887, 140);
 			dgvCustomer.TabIndex = 7;
 			// 
 			// btnUpdate
 			// 
-			btnUpdate.Location = new System.Drawing.Point(650, 312);
+			btnUpdate.Location = new System.Drawing.Point(292, 433);
 			btnUpdate.Name = "btnUpdate";
 			btnUpdate.Size = new System.Drawing.Size(94, 29);
 			btnUpdate.TabIndex = 8;
@@ -171,7 +175,7 @@
 			// 
 			// btnCreate
 			// 
-			btnCreate.Location = new System.Drawing.Point(780, 312);
+			btnCreate.Location = new System.Drawing.Point(422, 433);
 			btnCreate.Name = "btnCreate";
 			btnCreate.Size = new System.Drawing.Size(94, 29);
 			btnCreate.TabIndex = 8;
@@ -182,7 +186,7 @@
 			// btnSave
 			// 
 			btnSave.Enabled = false;
-			btnSave.Location = new System.Drawing.Point(910, 312);
+			btnSave.Location = new System.Drawing.Point(552, 433);
 			btnSave.Name = "btnSave";
 			btnSave.Size = new System.Drawing.Size(94, 29);
 			btnSave.TabIndex = 8;
@@ -193,7 +197,7 @@
 			// btnCancel
 			// 
 			btnCancel.Enabled = false;
-			btnCancel.Location = new System.Drawing.Point(1040, 312);
+			btnCancel.Location = new System.Drawing.Point(682, 433);
 			btnCancel.Name = "btnCancel";
 			btnCancel.Size = new System.Drawing.Size(94, 29);
 			btnCancel.TabIndex = 8;
@@ -358,12 +362,51 @@
 			dtpBirth.Size = new System.Drawing.Size(250, 27);
 			dtpBirth.TabIndex = 15;
 			// 
+			// cbGender
+			// 
+			cbGender.FormattingEnabled = true;
+			cbGender.Location = new System.Drawing.Point(397, 379);
+			cbGender.Name = "cbGender";
+			cbGender.Size = new System.Drawing.Size(151, 28);
+			cbGender.TabIndex = 24;
+			// 
+			// label10
+			// 
+			label10.AutoSize = true;
+			label10.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			label10.Location = new System.Drawing.Point(300, 373);
+			label10.Name = "label10";
+			label10.Size = new System.Drawing.Size(91, 31);
+			label10.TabIndex = 23;
+			label10.Text = "Gender";
+			// 
+			// txtPhone
+			// 
+			txtPhone.Location = new System.Drawing.Point(800, 320);
+			txtPhone.Name = "txtPhone";
+			txtPhone.Size = new System.Drawing.Size(280, 27);
+			txtPhone.TabIndex = 22;
+			// 
+			// label6
+			// 
+			label6.AutoSize = true;
+			label6.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			label6.Location = new System.Drawing.Point(800, 275);
+			label6.Name = "label6";
+			label6.Size = new System.Drawing.Size(82, 31);
+			label6.TabIndex = 21;
+			label6.Text = "Phone";
+			// 
 			// frmCustomer
 			// 
 			AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			BackColor = System.Drawing.SystemColors.ControlLight;
 			ClientSize = new System.Drawing.Size(1190, 620);
+			Controls.Add(cbGender);
+			Controls.Add(label10);
+			Controls.Add(txtPhone);
+			Controls.Add(label6);
 			Controls.Add(dtpBirth);
 			Controls.Add(txtStatus);
 			Controls.Add(pictureBox1);
@@ -428,5 +471,9 @@
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.TextBox txtStatus;
 		private System.Windows.Forms.DateTimePicker dtpBirth;
+		private System.Windows.Forms.ComboBox cbGender;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.TextBox txtPhone;
+		private System.Windows.Forms.Label label6;
 	}
 }

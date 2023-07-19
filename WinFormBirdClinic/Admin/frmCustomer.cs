@@ -60,7 +60,15 @@ namespace WinFormBirdClinic
 
 		private void frmCustomer_Load(object sender, EventArgs e)
 		{
+			LoadGender();
 			LoadCustomer(repo.GetAccountsByRole(1));
+		}
+		private void LoadGender()
+		{
+			var gender = repo.Gender();
+			cbGender.DataSource = gender;
+			cbGender.DisplayMember = "GenderName";
+			cbGender.ValueMember = "Gender1";
 		}
 		public void LoadCustomer(List<Account> list)
 		{
@@ -74,12 +82,16 @@ namespace WinFormBirdClinic
 				txtPassword.DataBindings.Clear();
 				txtUserName.DataBindings.Clear();
 				txtStatus.DataBindings.Clear();
+				txtPhone.DataBindings.Clear();
+				cbGender.DataBindings.Clear();
 
 				dtpBirth.DataBindings.Add("Text", source, "DateOfBirth");
 				txtFullName.DataBindings.Add("Text", source, "Name");
 				txtPassword.DataBindings.Add("Text", source, "Password");
 				txtUserName.DataBindings.Add("Text", source, "Username");
 				txtStatus.DataBindings.Add("Text", source, "Status");
+				txtPhone.DataBindings.Add("Text", source, "Phone");
+				cbGender.DataBindings.Add("Text", source, "GenderNavigation.GenderName");
 				dgvCustomer.DataSource = null;
 				dgvCustomer.DataSource = source;
 
@@ -107,6 +119,8 @@ namespace WinFormBirdClinic
 					Username = txtUserName.Text.Trim(),
 					DateOfBirth = DateTime.Parse(Date),
 					Password = txtPassword.Text.Trim(),
+					Gender = int.Parse(cbGender.SelectedValue.ToString()),
+					Phone = txtPhone.Text,
 				};
 				repo.UpdateAccount(p);
 				LoadCustomer(repo.GetAccountsByRole(1));
@@ -143,8 +157,9 @@ namespace WinFormBirdClinic
 					Password = txtPassword.Text.Trim(),
 					Username = txtUserName.Text.Trim(),
 					RoleId = 1,
-					Status = true
-
+					Status = true,
+					Gender = int.Parse(cbGender.SelectedValue.ToString()),
+					Phone = txtPhone.Text,
 				};
 				repo.CreateAccount(p);
 				LoadCustomer(repo.GetAccountsByRole(1));
@@ -159,6 +174,8 @@ namespace WinFormBirdClinic
 			txtPassword.DataBindings.Clear();
 			txtUserName.DataBindings.Clear();
 			dtpBirth.DataBindings.Clear();
+			cbGender.DataBindings.Clear();
+			txtPhone.DataBindings.Clear();
 			ClearText();
 			btnCreate.Enabled = false;
 			btnCancel.Enabled = true;
@@ -173,6 +190,7 @@ namespace WinFormBirdClinic
 			txtPassword.Text = string.Empty;
 			txtStatus.Text = string.Empty;
 			txtUserName.Text = string.Empty;
+			txtPhone.Text = string.Empty;
 
 		}
 	}

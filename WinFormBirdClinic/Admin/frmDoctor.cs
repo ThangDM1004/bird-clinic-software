@@ -59,10 +59,18 @@ namespace WinFormBirdClinic
 
 		private void frmDoctor_Load(object sender, EventArgs e)
 		{
+			LoadGender();
 			LoadDoctorList(repo.GetAccountsByRole(3));
 		}
 		IAccountRepository repo = new AccountRepository();
 		BindingSource source;
+		private void LoadGender()
+		{
+			var gender = repo.Gender();
+			cbGender.DataSource = gender;
+			cbGender.DisplayMember = "GenderName";
+			cbGender.ValueMember = "Gender1";
+		}
 		public void LoadDoctorList(List<Account> list)
 		{
 			try
@@ -75,12 +83,16 @@ namespace WinFormBirdClinic
 				txtPassword.DataBindings.Clear();
 				txtUserName.DataBindings.Clear();
 				txtStatus.DataBindings.Clear();
+				txtPhone.DataBindings.Clear();
+				cbGender.DataBindings.Clear();
 
 				dtpBirth.DataBindings.Add("Text", source, "DateOfBirth");
 				txtFullName.DataBindings.Add("Text", source, "Name");
 				txtPassword.DataBindings.Add("Text", source, "Password");
 				txtUserName.DataBindings.Add("Text", source, "Username");
 				txtStatus.DataBindings.Add("Text", source, "Status");
+				txtPhone.DataBindings.Add("Text", source, "Phone");
+				cbGender.DataBindings.Add("Text", source, "GenderNavigation.GenderName");
 				dgvDoctor.DataSource = null;
 				dgvDoctor.DataSource = source;
 
@@ -90,7 +102,6 @@ namespace WinFormBirdClinic
 
 		private void btnUpdate_Click(object sender, EventArgs e)
 		{
-			btnSave.Enabled = false;
 
 			DateTime selectDate = dtpBirth.Value;
 			string Date = selectDate.ToString("yyyy/MM/dd HH:mm:ss");
@@ -103,11 +114,13 @@ namespace WinFormBirdClinic
 				var p = new Account
 				{
 					Name = txtFullName.Text.Trim(),
-					RoleId = 1,
+					RoleId = 3,
 					Status = true,
 					Username = txtUserName.Text.Trim(),
 					DateOfBirth = DateTime.Parse(Date),
 					Password = txtPassword.Text.Trim(),
+					Gender = int.Parse(cbGender.SelectedValue.ToString()),
+					Phone = txtPhone.Text,
 				};
 				repo.UpdateAccount(p);
 				LoadDoctorList(repo.GetAccountsByRole(3));
@@ -144,8 +157,9 @@ namespace WinFormBirdClinic
 					Password = txtPassword.Text.Trim(),
 					Username = txtUserName.Text.Trim(),
 					RoleId = 3,
-					Status = true
-
+					Status = true,
+					Gender = int.Parse(cbGender.SelectedValue.ToString()),
+					Phone = txtPhone.Text.Trim(),
 				};
 				repo.CreateAccount(p);
 				LoadDoctorList(repo.GetAccountsByRole(3));
@@ -160,6 +174,8 @@ namespace WinFormBirdClinic
 			txtPassword.DataBindings.Clear();
 			txtUserName.DataBindings.Clear();
 			dtpBirth.DataBindings.Clear();
+			cbGender.DataBindings.Clear();
+			txtPhone.DataBindings.Clear();
 			ClearText();
 			btnCreate.Enabled = false;
 			btnCancel.Enabled = true;
@@ -174,7 +190,7 @@ namespace WinFormBirdClinic
 			txtPassword.Text = string.Empty;
 			txtStatus.Text = string.Empty;
 			txtUserName.Text = string.Empty;
-
+			txtPhone.Text = string.Empty;
 		}
 	}
 }

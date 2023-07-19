@@ -121,15 +121,28 @@ namespace WinFormBirdClinic
 			}
 
 		}
-
+		IPatientBirdRepository bird = new PatientBirdRepository();
+		IMedicalRepository med = new MedicalRepository();
 		private void btnUpdate_Click(object sender, EventArgs e)
 		{
 			try
 			{
 				var b = repo.GetBookingbyID(int.Parse(txtBookingId.Text));
 				b.StatusId = int.Parse(cbStatus.SelectedValue.ToString());
+				if (b.StatusId == 4)
+				{
+					var m = new MedicalRecord
+					{
+						BookingId = int.Parse(txtBookingId.Text),
+						PatientId = bird.getPatientByName(txtPatientName.Text).PatientId,
+						TotalFee = double.Parse(txtFee.Text),
+					};
+					med.CreateMedical(m);
+				}
 				repo.UpdateBooking(b);
 				LoadBooking(repo.getAllBooking());
+				LoadStatusBooking(b.StatusId);
+				
 			}
 			catch (Exception ex)
 			{
@@ -142,7 +155,6 @@ namespace WinFormBirdClinic
 		{
 			var b = repo.GetBookingbyID(int.Parse(txtBookingId.Text));
 			LoadStatusBooking(b.StatusId);
-
 		}
 	}
 }

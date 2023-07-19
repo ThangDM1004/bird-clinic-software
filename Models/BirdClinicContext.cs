@@ -19,8 +19,10 @@ namespace Models
 
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<MedicalRecord> MedicalRecords { get; set; }
         public virtual DbSet<PatientBird> PatientBirds { get; set; }
+        public virtual DbSet<RegistrationSchedule> RegistrationSchedules { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<ServiceMore> ServiceMores { get; set; }
@@ -32,7 +34,7 @@ namespace Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=12345;database=BirdClinic;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer("Server=(local); Database=BirdClinic; Uid=sa; Pwd=12345");
             }
         }
 
@@ -42,7 +44,8 @@ namespace Models
 
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.HasKey(e => e.Username);
+                entity.HasKey(e => e.Username)
+                    .HasName("PK_Account_1");
 
                 entity.ToTable("Account");
 
@@ -54,6 +57,8 @@ namespace Models
                 entity.Property(e => e.DateOfBirth)
                     .HasColumnType("date")
                     .HasColumnName("date_of_birth");
+
+                entity.Property(e => e.Gender).HasColumnName("gender");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -67,9 +72,20 @@ namespace Models
                     .HasColumnName("password")
                     .IsFixedLength(true);
 
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(10)
+                    .HasColumnName("phone")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.RoleId).HasColumnName("role_id");
 
                 entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.HasOne(d => d.GenderNavigation)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.Gender)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Account_Gender");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)
@@ -123,12 +139,23 @@ namespace Models
                     .HasForeignKey(d => d.StatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Booking_Status_Booking");
+            });
 
-                entity.HasOne(d => d.UsernameCustomerNavigation)
-                    .WithMany(p => p.Bookings)
-                    .HasForeignKey(d => d.UsernameCustomer)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Booking_Account");
+            modelBuilder.Entity<Gender>(entity =>
+            {
+                entity.HasKey(e => e.Gender1);
+
+                entity.ToTable("Gender");
+
+                entity.Property(e => e.Gender1)
+                    .ValueGeneratedNever()
+                    .HasColumnName("gender");
+
+                entity.Property(e => e.GenderName)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .HasColumnName("gender_name")
+                    .IsFixedLength(true);
             });
 
             modelBuilder.Entity<MedicalRecord>(entity =>
@@ -178,17 +205,38 @@ namespace Models
 
                 entity.Property(e => e.Weight).HasColumnName("weight");
 
+                entity.HasOne(d => d.GenderNavigation)
+                    .WithMany(p => p.PatientBirds)
+                    .HasForeignKey(d => d.Gender)
+                    .HasConstraintName("FK_PatientBird_Gender");
+
                 entity.HasOne(d => d.Species)
                     .WithMany(p => p.PatientBirds)
                     .HasForeignKey(d => d.SpeciesId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Patient_Species");
+            });
+
+            modelBuilder.Entity<RegistrationSchedule>(entity =>
+            {
+                entity.HasKey(e => new { e.Username, e.Date });
+
+                entity.ToTable("RegistrationSchedule");
+
+                entity.Property(e => e.Username)
+                    .HasMaxLength(15)
+                    .HasColumnName("username")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("date")
+                    .HasColumnName("date");
 
                 entity.HasOne(d => d.UsernameNavigation)
-                    .WithMany(p => p.PatientBirds)
+                    .WithMany(p => p.RegistrationSchedules)
                     .HasForeignKey(d => d.Username)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Patient_Account");
+                    .HasConstraintName("FK_RegistrationSchedule_Account");
             });
 
             modelBuilder.Entity<Role>(entity =>
